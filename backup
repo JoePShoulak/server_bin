@@ -16,10 +16,10 @@ case "$machine" in
     ip_address="10.0.0.181"
     ;;
   HP3)
-    ip_address="10.0.0.182"
+    ip_address="10.0.0.153"
     ;;
   HP4)
-    ip_address="10.0.0.183"
+    ip_address="10.0.0.48"
     ;;
   *)
     echo "Error: Invalid machine name. Use HP2, HP3, or HP4."
