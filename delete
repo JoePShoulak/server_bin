@@ -1,0 +1,10 @@
+#!/bin/bash
+
+server_name=$1
+
+echo "Removing Docker container..."
+sudo docker rm $server_name
+echo "Removing directories..."
+rm -rf /opt/minecraft/$server_name
+rm -rf ~/minecraft/$server_name
+echo "Done!"

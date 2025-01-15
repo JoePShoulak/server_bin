@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Check if an argument is provided
+if [ -z "$1" ]; then
+  echo "Usage: $0 <server_name>"
+  exit 1
+fi
+
+server_name=$1
+
+echo "Creating directories..."
+mkdir -p /opt/minecraft/$server_name/mods
+mkdir ~/minecraft/$server_name
+
+# Replace SERVER_NAME with the $1 input and save to a new file
+# echo "Copying compose.yml..."
+sed "s/SERVER_NAME/$server_name/g" ~/bin/create/compose.yml > ~/minecraft/$server_name/compose.yml
+
+echo "Creating Docker instance..."
+cd ~/minecraft/$server_name
+sudo docker compose create

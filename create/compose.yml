@@ -1,0 +1,31 @@
+services:
+  minecraft:
+    image: itzg/minecraft-server:latest
+    tty: TRUE
+    stdin_open: TRUE
+    container_name: SERVER_NAME
+    restart: always
+    ports:
+      - "25565:25565"
+    volumes:
+      # use a named, managed volume for data volume
+      - "/opt/minecraft/SERVER_NAME/:/data"
+      # attach local host directory "mods" in same directory as this compose file
+      # all mods in this directory get copied into /data/mods at startup
+      - "/opt/minecraft/SERVER_NAME/mods:/mods:ro"
+    environment:
+      EULA: "TRUE"
+      VERSION: "1.20.1"
+      TYPE: "FORGE"
+      DEBUG: "TRUE"
+      MAX_PLAYERS: "20"
+      MODE: "SURVIVAL"
+      DIFFICULTY: "NORMAL"
+      SERVER_NAME: "SERVER_NAME"
+      MOTD: "A brand new server!"
+      MAX_MEMORY: "8G"
+      MIN_MEMORY: "4G"
+
+volumes:
+  # declared the named volume, but use default/local storage engine
+  mc_forge: {}
