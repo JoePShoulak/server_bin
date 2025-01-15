@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# IP address for the target machine
+target_ip="10.0.0.211"
+
+# Check if the world/folder name is provided
+if [ -z "$1" ]; then
+  echo "Error: No world (folder) name provided. Usage: $0 <world>"
+  exit 1
+fi
+
+# Set the world/folder
+folder=$1
+
+# Check if the folder exists locally
+if [ ! -d "/opt/minecraft/$folder" ]; then
+  echo "Error: The folder '/opt/minecraft/$folder' does not exist. Aborting restore."
+  exit 1
+fi
+
+echo "Restoring the server folder '$folder' to the target machine ($target_ip)..."
+
+# Perform the rsync operation and suppress error output
+rsync -av --delete /opt/minecraft/$folder/ joe@$target_ip:/opt/minecraft/$folder/ 2>/tmp/rsync_restore_error.log
+rsync_exit_code=$?
+
+# Handle errors from rsync
+if [ $rsync_exit_code -ne 0 ]; then
+  echo "Error: Restore failed."
+  case $rsync_exit_code in
+    255)
+      echo "Reason: Unable to connect to the target machine ($target_ip). Ensure it is online and accessible."
+      ;;
+    *)
+      echo "Reason: Rsync returned error code $rsync_exit_code. Check /tmp/rsync_restore_error.log for details."
+      ;;
+  esac
+  exit $rsync_exit_code
+fi
+
+echo "Restore of folder '$folder' to the target machine completed successfully!"
