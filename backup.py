@@ -1,0 +1,44 @@
+import argparse
+import subprocess
+import os
+
+def is_machine_reachable(host, timeout=2):
+  try:
+    # Ping the host
+    subprocess.run(
+      ["ping", "-c", "1", "-W", str(timeout), host],
+      stdout=subprocess.PIPE,
+      stderr=subprocess.PIPE,
+      check=True,
+    )
+    return True
+  except subprocess.CalledProcessError:
+    return False
+    
+
+parser = argparse.ArgumentParser()
+parser.add_argument("container")
+parser.add_argument( "-d", "--destination",default="hp2")
+args = parser.parse_args()
+
+target = ""
+match args.destination:
+  case "hp2":
+    target = "joe@10.0.0.181"
+  case "hp3":
+    target = "joe@10.0.0.151"
+  case "hp2":
+    target = "joe@10.0.0.48"
+    
+
+print(args.container)
+print(args.destination)
+
+if not os.path.isdir(f"~/minecraft/{args.container}"):
+  print("No such container present on machine")
+  exit()
+
+if not is_machine_reachable(target):
+  print(f"Target ({target}) is not reachable.")
+  exit()
+
