@@ -38,6 +38,7 @@ match args.destination:
 print(args.container)
 print(args.destination)
 
+os.system("ls $HOME/minecraft")
 if not os.path.isdir(f"$HOME/minecraft/{args.container}"):
   print("No such container present on machine")
   exit()
