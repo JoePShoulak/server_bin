@@ -1,6 +1,8 @@
 import argparse
 import subprocess
 import os
+import shutil
+import re
 
 # Determines if the target is reachable
 def is_machine_reachable(host, timeout=2):
@@ -97,4 +99,20 @@ if not is_machine_reachable(target_ip):
 
 # Perform the backup
 backup_folder(f"/opt/minecraft/{args.container}", target_user, target_ip)
+
+compose_file = f"/home/joe/minecraft/{args.container}/compose.yml"
+backup_file = f"{compose_file}.bak"
+shutil.copy(compose_file, backup_file)
+
+with compose_file.open("r") as f:
+  content = f.read()
+
+  # Replace \d+:25565 with 30001:25565
+  updated_content = re.sub(r"\d+:25565", "30001:25565", content)
+
+  # Write the updated content back to the original compose_file
+  with compose_file.open("w") as f:
+    f.write(updated_content)
+  print(f"Updated '{compose_file}' with the new port configuration.")
+
 backup_folder(f"/home/joe/minecraft/{args.container}", target_user, target_ip)
