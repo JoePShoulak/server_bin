@@ -3,6 +3,7 @@ import subprocess
 import os
 import shutil
 import re
+from pathlib import Path
 
 # Determines if the target is reachable
 def is_machine_reachable(host, timeout=2):
@@ -100,8 +101,8 @@ if not is_machine_reachable(target_ip):
 # Perform the backup
 backup_folder(f"/opt/minecraft/{args.container}", target_user, target_ip)
 
-compose_file = f"/home/joe/minecraft/{args.container}/compose.yml"
-backup_file = f"{compose_file}.bak"
+compose_file = Path(f"/home/joe/minecraft/{args.container}/compose.yml")
+backup_file = compose_file.with_suffix(compose_file.suffix + ".bak")
 shutil.copy(compose_file, backup_file)
 
 with compose_file.open("r") as f:
