@@ -44,7 +44,7 @@ if not os.path.isdir(f"/home/joe/minecraft/{args.container}"):
   print("No such container present on machine")
   exit()
 
-if not is_machine_reachable(target):
+if not is_machine_reachable(target.split("@")[1]):
   print(f"Target ({target}) is not reachable.")
   exit()
 
