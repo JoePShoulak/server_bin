@@ -35,11 +35,6 @@ match args.destination:
     print(f"Invalid destination: {args.destination}")
     exit()
 
-print(args.container)
-print(args.destination)
-
-os.system("ls /home/joe/minecraft")
-print(f"~/minecraft/{args.container}")
 if not os.path.isdir(f"/home/joe/minecraft/{args.container}"):
   print("No such container present on machine")
   exit()
@@ -47,4 +42,6 @@ if not os.path.isdir(f"/home/joe/minecraft/{args.container}"):
 if not is_machine_reachable(target.split("@")[1]):
   print(f"Target ({target}) is not reachable.")
   exit()
+
+print("no failure")
 
