@@ -35,7 +35,7 @@ match args.destination:
     print(f"Invalid destination: {args.destination}")
     exit()
 
-if not os.path.isdir(f"/home/joe/minecraft/{args.container}"):
+if not os.path.isdir(f"/home/joe/minecraft/{args.container}") or not os.path.isdir(f"/opt/minecraft/{args.container}"):
   print("No such container present on machine")
   exit()
 
