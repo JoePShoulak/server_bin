@@ -79,7 +79,7 @@ match args.destination:
     case "hp2":
         target_ip = "10.0.0.181"
     case "hp3":
-        target_ip = "10.0.0.151"
+        target_ip = "10.0.0.153"
     case "hp4":
         target_ip = "10.0.0.48"
     case _:
