@@ -109,7 +109,7 @@ with compose_file.open("r") as f:
   content = f.read()
 
   # Replace \d+:25565 with 30001:25565
-  updated_content = re.sub(r"\d+:25565", "30001:25565", content)
+  updated_content = re.sub(r"\d+:25565", f"3000{args.destination[-1]}:25565", content)
 
   # Write the updated content back to the original compose_file
   with compose_file.open("w") as f:
