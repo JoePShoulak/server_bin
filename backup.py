@@ -23,13 +23,17 @@ args = parser.parse_args()
 
 target = ""
 match args.destination:
+  case "hp1":
+    target = "joe@10.0.0.211"
   case "hp2":
     target = "joe@10.0.0.181"
   case "hp3":
     target = "joe@10.0.0.151"
   case "hp2":
     target = "joe@10.0.0.48"
-    
+  case _:
+    print(f"Invalid destination: {args.destination}")
+    exit()
 
 print(args.container)
 print(args.destination)
