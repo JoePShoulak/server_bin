@@ -5,7 +5,8 @@ def query_ups():
 
 def get_ups_state():
     status_line = [line for line in query_ups().stdout.splitlines() if "ups.status" in line][0]
-    print(status_line)
+    status = status_line.split(": ")[-1].split(" ")
+    print(status)
 
 
 # subprocess.run(["beep", "-f", "1000", "-r", "5", "-d", "100"])
