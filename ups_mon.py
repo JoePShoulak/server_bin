@@ -1,4 +1,5 @@
 import subprocess
+from beep import *
 
 from enum import Enum
 class State(Enum):
@@ -23,6 +24,7 @@ def get_ups_state():
     else:
         return State.UNKNOWN
 
-
-# subprocess.run(["beep", "-f", "1000", "-r", "5", "-d", "100"])
-print(get_ups_state().name)
+state = get_ups_state().name
+print(state)
+if state == State.ONLINE:
+    beep()
