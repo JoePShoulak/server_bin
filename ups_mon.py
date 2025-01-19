@@ -63,19 +63,19 @@ def stop_all_containers():
         if container_ids:
             # Stop all running containers
             subprocess.run(["sudo", "docker", "stop"] + container_ids.split(), check=True)
-            print("All containers stopped successfully.")
+            print("All containers stopped successfully.", flush=True)
         else:
-            print("No running containers to stop.")
+            print("No running containers to stop.", flush=True)
     except subprocess.CalledProcessError as e:
-        print(f"An error occurred: {e}")
+        print(f"An error occurred: {e}", flush=True)
 
 def shutdown():
-    print('Shutting down in 10 seconds')
+    print('Shutting down in 10 seconds', flush=True)
     sleep(10)
     try:
         subprocess.run(['sudo','shutdown', '-h', 'now'])
     except:
-        print("Failed to shutdown. Shit's gonna fail the hard way.")
+        print("Failed to shutdown. Shit's gonna fail the hard way.", flush=True)
 
 def happy_beep():
     beep()
@@ -93,7 +93,7 @@ def main():
     while True:
         sleep(1)
         state = get_ups_state()
-        print(state.name)
+        print(state.name, flush=True)
 
         if state == old_state:
             continue
