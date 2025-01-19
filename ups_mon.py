@@ -71,7 +71,7 @@ def stop_all_containers():
 
 def shutdown():
     print('Shutting down in 10 seconds')
-    sleep(10000)
+    sleep(10)
     try:
         subprocess.run(['sudo','shutdown', '-h', 'now'])
     except:
