@@ -56,10 +56,10 @@ def main():
 
         match state:
             case State.BATTERY:
-                beep(1000, 5)
+                # beep(1000, 5)
                 warn_minecraft(LOW_BATTERY_WARNING)
             case State.CRITICAL:
-                beep(2000, 5)
+                # beep(2000, 5)
                 warn_minecraft(SHUTDOWN_WARNING)
                 sleep(10)
                 stop_all_containers()
