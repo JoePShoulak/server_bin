@@ -1,8 +1,10 @@
 import subprocess
 from beep import *
 from enum import Enum
+from time import sleep
 
 LOW_BATTERY_WARNING = "The server computer has lost power and is running on battery. Your game server may shut down within 5 minutes."
+SHUTDOWN_WARNING = "The server The server will shut down in 10 seconds."
 
 class State(Enum):
     ONLINE = 2
@@ -49,7 +51,7 @@ def main():
     state = get_ups_state()
     print(state.name)
 
-    state=State.BATTERY
+    state=State.CRITICAL
 
     match state:
         case State.BATTERY:
@@ -57,6 +59,8 @@ def main():
             warn_minecraft(LOW_BATTERY_WARNING)
         case State.CRITICAL:
             # beep(2000, 5)
+            warn_minecraft(SHUTDOWN_WARNING)
+            sleep(10)
             stop_all_containers()
         case State.ONLINE:
             pass
