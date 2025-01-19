@@ -3,8 +3,9 @@ from beep import *
 from enum import Enum
 from time import sleep
 
-LOW_BATTERY_WARNING = "The server computer has lost power and is running on battery. Your game server may shut down within 5 minutes."
-SHUTDOWN_WARNING = "The server will shut down in 10 seconds."
+LOW_BATTERY_MESSAGE = "The server computer has lost power and is running on battery. Your game server may shut down within 5 minutes."
+SHUTDOWN_MESSAGE = "The server will shut down in 10 seconds."
+ONLINE_MESSAGE = "Power has been restored to the server. Crisis averted! :)"
 
 class State(Enum):
     ONLINE = 2
@@ -28,8 +29,24 @@ def get_ups_state():
     else:
         return State.UNKNOWN
     
-def warn_minecraft(message):
-    subprocess.run(["sudo", "./rcon_all", f"say §c{message}"])
+def announce_minecraft(message, color="red"):
+    colors = {
+        'black': '§0',
+        'darkblue': '',
+        'darkgreen': '',
+        'darkaqua': '',
+        'darkred': '',
+        'darkpurple': '',
+        'gold': '',
+        'gray': '',
+        'darkgray': '',
+        'blue': '§9',
+        'green': '§a',
+        'aqua': '',
+        'red': '§c',
+    }
+
+    subprocess.run(["sudo", "./rcon_all", f"say §{"foo"}{message}"])
 
 def stop_all_containers():
     try:
@@ -46,7 +63,7 @@ def stop_all_containers():
             print("No running containers to stop.")
     except subprocess.CalledProcessError as e:
         print(f"An error occurred: {e}")
-    
+
 def main():
     old_state = State.UNKNOWN
 
@@ -62,14 +79,22 @@ def main():
         match state:
             case State.BATTERY:
                 beep(1000, 5)
-                warn_minecraft(LOW_BATTERY_WARNING)
+                announce_minecraft(LOW_BATTERY_MESSAGE, color="red")
             case State.CRITICAL:
                 beep(2000, 5)
-                warn_minecraft(SHUTDOWN_WARNING)
+                announce_minecraft(SHUTDOWN_MESSAGE, color="red")
                 sleep(10)
                 stop_all_containers()
             case State.ONLINE:
-                pass
+                beep()
+                sleep(0.1)
+                beep(2000)
+                sleep(0.1)
+                beep()
+                sleep(0.1)
+                beep(2000)
+                sleep(0.1)
+                announce_minecraft(ONLINE_MESSAGE, color="green")
             case State.UNKNOWN:
                 pass
             case _:
