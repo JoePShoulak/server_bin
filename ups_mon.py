@@ -48,24 +48,27 @@ def stop_all_containers():
         print(f"An error occurred: {e}")
     
 def main():
-    state = get_ups_state()
-    print(state.name)
+    while True:
+        sleep(10)
+        
+        state = get_ups_state()
+        print(state.name)
 
-    match state:
-        case State.BATTERY:
-            # beep(1000, 5)
-            warn_minecraft(LOW_BATTERY_WARNING)
-        case State.CRITICAL:
-            # beep(2000, 5)
-            warn_minecraft(SHUTDOWN_WARNING)
-            sleep(10)
-            stop_all_containers()
-        case State.ONLINE:
-            pass
-        case State.UNKNOWN:
-            pass
-        case _:
-            pass
+        match state:
+            case State.BATTERY:
+                # beep(1000, 5)
+                warn_minecraft(LOW_BATTERY_WARNING)
+            case State.CRITICAL:
+                # beep(2000, 5)
+                warn_minecraft(SHUTDOWN_WARNING)
+                sleep(10)
+                stop_all_containers()
+            case State.ONLINE:
+                pass
+            case State.UNKNOWN:
+                pass
+            case _:
+                pass
 
 if __name__ == "__main__":
     main()
