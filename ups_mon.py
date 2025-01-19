@@ -25,4 +25,4 @@ def get_ups_state():
 
 
 # subprocess.run(["beep", "-f", "1000", "-r", "5", "-d", "100"])
-print(get_ups_state())
+print(get_ups_state().name)
