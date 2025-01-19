@@ -27,7 +27,7 @@ def get_ups_state():
         return State.UNKNOWN
     
 def warn_minecraft(message):
-    subprocess.run(["sudo", "./rcon_all", f"say §c${message}"])
+    subprocess.run(["sudo", "./rcon_all", f"say §c{message}"])
 
 def stop_all_containers():
     try:
