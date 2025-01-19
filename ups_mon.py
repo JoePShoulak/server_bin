@@ -2,9 +2,7 @@ import subprocess
 from beep import *
 from enum import Enum
 
-LOW_BATTERY_WARNING = """NOTE: The server computer has lost power and is running on battery.
-Your game server may shut down within 5 minutes. 
-"""
+LOW_BATTERY_WARNING = "NOTE: The server computer has lost power and is running on battery. Your game server may shut down within 5 minutes."
 
 class State(Enum):
     ONLINE = 2
