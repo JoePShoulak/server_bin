@@ -23,8 +23,25 @@ def get_ups_state():
         return State.ONLINE
     else:
         return State.UNKNOWN
+    
+def main():
+    state = get_ups_state()
+    print(state.name)
 
-state = get_ups_state()
-print(state.name)
-if state == State.ONLINE:
-    beep(1000, 5)
+    state=State.BATTERY
+
+    match state:
+        case State.BATTERY:
+            beep(1000, 5)
+            subprocess("$HOME/bin/rcon_all 'say hello'")
+        case State.CRITICAL:
+            beep(2000, 5)
+        case State.ONLINE:
+            pass
+        case State.UNKNOWN:
+            pass
+        case _:
+            pass
+
+if __name__ == "__main__":
+    main()
