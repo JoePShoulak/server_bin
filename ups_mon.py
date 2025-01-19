@@ -32,21 +32,26 @@ def get_ups_state():
 def announce_minecraft(message, color="red"):
     colors = {
         'black': '§0',
-        'darkblue': '',
-        'darkgreen': '',
-        'darkaqua': '',
-        'darkred': '',
-        'darkpurple': '',
-        'gold': '',
-        'gray': '',
-        'darkgray': '',
+        'darkblue': '§1',
+        'green': '§2',
+        'teal': '§3',
+        'darkred': '§4',
+        'purple': '§5',
+        'gold': '§6',
+        'silver': '§7',
+        'gray': '§8',
         'blue': '§9',
-        'green': '§a',
-        'aqua': '',
+        'lime': '§a',
+        'aqua': '§b',
         'red': '§c',
+        'violet': '§d',
+        'yellow': '§e',
     }
 
-    subprocess.run(["sudo", "./rcon_all", f"say §{"foo"}{message}"])
+    if colors.get('color'):
+        message = colors.get('color') + message
+
+    subprocess.run(["sudo", "./rcon_all", f"say {message}"])
 
 def stop_all_containers():
     try:

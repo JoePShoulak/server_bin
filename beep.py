@@ -6,6 +6,6 @@ def beep(freq=1000, repeat=1, delay=100):
 
 if __name__ == "__main__":
   print("ran")
-  beep(1000)
+  beep(1000, 5)
   sleep(1)
-  beep(2000)
+  beep(2000, 5)
