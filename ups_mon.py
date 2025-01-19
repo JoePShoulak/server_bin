@@ -30,7 +30,7 @@ def get_ups_state():
         return State.UNKNOWN
     
 def warn_minecraft():
-    subprocess.run(["sudo", "./rcon_all", LOW_BATTERY_WARNING])
+    subprocess.run(["sudo", "./rcon_all", f"say ${LOW_BATTERY_WARNING}"])
     
 def main():
     state = get_ups_state()
