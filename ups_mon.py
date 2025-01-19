@@ -93,11 +93,11 @@ def main():
     while True:
         sleep(1)
         state = get_ups_state()
-        print(state.name, flush=True)
 
         if state == old_state:
             continue
 
+        print(state.name, flush=True)
         match state:
             case State.BATTERY:
                 beep(1000, 5)
