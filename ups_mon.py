@@ -69,6 +69,12 @@ def stop_all_containers():
     except subprocess.CalledProcessError as e:
         print(f"An error occurred: {e}")
 
+def shutdown():
+    try:
+        subprocess.run(['sudo','shutdown', '-h', 'now'])
+    except:
+        print("Failed to shutdown. Shit's gonna fail the hard way.")
+
 def happy_beep():
     beep()
     sleep(0.1)
@@ -99,6 +105,7 @@ def main():
                 announce_minecraft(SHUTDOWN_MESSAGE, color="red")
                 sleep(10)
                 stop_all_containers()
+                shutdown()
             case State.ONLINE:
                 if old_state == State.UNKNOWN: continue
                 
