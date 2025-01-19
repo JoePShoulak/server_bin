@@ -52,6 +52,7 @@ def main():
         sleep(1)
 
         state = get_ups_state()
+        state = State.BATTERY
         print(state.name)
 
         match state:
