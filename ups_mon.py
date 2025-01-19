@@ -32,10 +32,11 @@ def main():
 
     match state:
         case State.BATTERY:
-            beep(1000, 5)
-            subprocess("$HOME/bin/rcon_all", "say hello")
+            # beep(1000, 5)
+            subprocess("./rcon_all", "say hello")
         case State.CRITICAL:
-            beep(2000, 5)
+            # beep(2000, 5)
+            pass
         case State.ONLINE:
             pass
         case State.UNKNOWN:
