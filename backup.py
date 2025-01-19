@@ -103,17 +103,31 @@ backup_folder(f"/opt/minecraft/{args.container}", target_user, target_ip)
 
 compose_file = Path(f"/home/joe/minecraft/{args.container}/compose.yml")
 backup_file = compose_file.with_suffix(compose_file.suffix + ".bak")
+
+# Step 1: Create a backup of the original file
 shutil.copy(compose_file, backup_file)
+print(f"Backup created: {backup_file}")
 
+# Step 2: Modify the original file
 with compose_file.open("r") as f:
-  content = f.read()
+    content = f.read()
 
-  # Replace \d+:25565 with 30001:25565
-  updated_content = re.sub(r"\d+:25565", f"3100{args.destination[-1]}:25565", content)
+# Replace \d+:25565 with the new port configuration
+updated_content = re.sub(r"\d+:25565", f"3100{args.destination[-1]}:25565", content)
 
-  # Write the updated content back to the original compose_file
-  with compose_file.open("w") as f:
+# Write the updated content back to the original compose_file
+with compose_file.open("w") as f:
     f.write(updated_content)
-  print(f"Updated '{compose_file}' with the new port configuration.")
+print(f"Updated '{compose_file}' with the new port configuration.")
 
-backup_folder(f"/home/joe/minecraft/{args.container}", target_user, target_ip)
+# Step 3: Restore the original file by renaming the backup, then remove the backup
+try:
+    # Restore the original from the backup
+    os.rename(backup_file, compose_file)
+    print(f"Restored the original from the backup: {backup_file}")
+
+    # Remove the backup file
+    os.remove(backup_file)
+    print(f"Removed the backup file: {backup_file}")
+except Exception as e:
+    print(f"Error during backup restoration: {e}")
