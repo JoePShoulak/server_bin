@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# RCON command to send
+COMMAND=$1
+
+# Ensure a command is provided
+if [ -z "$COMMAND" ]; then
+    echo "Usage: $0 '<rcon_command>'"
+    exit 1
+fi
+
+# Loop through all containers tagged with app=minecraft
+for container in $(docker ps --filter "label=app=minecraft" --format "{{.Names}}"); do
+    echo "Sending to $container: $COMMAND"
+    echo "$COMMAND" | sudo docker exec -i $container rcon-cli
+done
+

@@ -49,7 +49,7 @@ def stop_all_containers():
     
 def main():
     while True:
-        sleep(10)
+        sleep(1)
 
         state = get_ups_state()
         print(state.name)
