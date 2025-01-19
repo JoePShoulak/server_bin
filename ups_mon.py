@@ -100,6 +100,8 @@ def main():
                 sleep(10)
                 stop_all_containers()
             case State.ONLINE:
+                if old_state == State.UNKNOWN: continue
+                
                 happy_beep()
                 announce_minecraft(ONLINE_MESSAGE, color="green")
             case State.UNKNOWN:
