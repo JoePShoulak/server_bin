@@ -85,7 +85,6 @@ def main():
     while True:
         sleep(1)
         state = get_ups_state()
-        state = State.CRITICAL
         print(state.name)
 
         if state == old_state:
