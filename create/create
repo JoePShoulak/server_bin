@@ -14,7 +14,7 @@ mkdir ~/minecraft/$server_name
 
 # Replace SERVER_NAME with the $1 input and save to a new file
 # echo "Copying compose.yml..."
-sed "s/SERVER_NAME/$server_name/g" ~/bin/create/compose.yml > ~/minecraft/$server_name/compose.yml
+sed "s/SERVER/$server_name/g" ~/bin/create/compose.yml > ~/minecraft/$server_name/compose.yml
 
 echo "Creating Docker instance..."
 cd ~/minecraft/$server_name

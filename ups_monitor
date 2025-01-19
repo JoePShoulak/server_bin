@@ -1,0 +1,14 @@
+#!/bin/bash
+while true; do
+    status=$(upsc apcups@localhost | grep "ups.status" | awk '{print $2}')
+    if [[ "$status" == "OB" ]]; then
+        echo "Power failure detected at $(date)"
+	beep -f 1000 -r 5 -d 100
+    fi
+    if [[ "$status" == "LB" ]]; then
+	echo "Lowe power detected! Shutting down..."
+	beep -f 2000 -r 5 -d 100
+    fi
+    sleep 10
+done
+

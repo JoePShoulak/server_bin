@@ -9,6 +9,7 @@ fi
 # Set the world/folder and machine
 folder=$1                      # First argument is the world/folder name
 machine=${2:-HP2}              # Second argument is the machine name, defaulting to HP2
+compose_file="$HOME/minecraft/$folder/compose.yml"
 
 # Determine the IP address based on the machine name
 case "$machine" in
@@ -16,7 +17,7 @@ case "$machine" in
     ip_address="10.0.0.181"
     ;;
   HP3)
-    ip_address="10.0.0.153"
+    ip_address="10.0.0.151"
     ;;
   HP4)
     ip_address="10.0.0.48"
@@ -27,21 +28,42 @@ case "$machine" in
     ;;
 esac
 
-# Check if the folder exists locally
+# Check if both folders exist locally
 if [ ! -d "/opt/minecraft/$folder" ]; then
   echo "Error: The folder '/opt/minecraft/$folder' does not exist. Aborting backup."
   exit 1
 fi
 
-echo "Backing up the server folder '$folder' to $machine ($ip_address)..."
+if [ ! -d "$HOME/minecraft/$folder" ]; then
+  echo "Error: The folder '$HOME/minecraft/$folder' does not exist. Aborting backup."
+  exit 1
+fi
 
-# Perform the rsync operation and suppress error output
-rsync -av --delete /opt/minecraft/$folder/ joe@$ip_address:/opt/minecraft/$folder/ 2>/tmp/rsync_error.log
+# Check if the compose file exists
+if [ ! -f "$compose_file" ]; then
+  echo "Error: The file '$compose_file' does not exist. Aborting backup."
+  exit 1
+fi
+
+# Edit the compose file to change the port
+sed -i.bak "s/[0-9]\+:25565/31001:25565/" "$compose_file"
+echo "Updated compose.yml to use port 31001:25565."
+
+# Check and remove the .bak file
+bak_file="$compose_file.bak"
+if [ -f "$bak_file" ]; then
+  rm "$bak_file"
+  echo "Removed backup file: $bak_file."
+else
+  echo "No backup file exists for $compose_file."
+fi
+
+# Back up /opt/minecraft/<server_name> folder
+echo "Backing up the server folder '/opt/minecraft/$folder' to $machine ($ip_address)..."
+rsync -av --delete "/opt/minecraft/$folder/" joe@$ip_address:/opt/minecraft/$folder/ 2>/tmp/rsync_error.log
 rsync_exit_code=$?
-
-# Handle errors from rsync
 if [ $rsync_exit_code -ne 0 ]; then
-  echo "Error: Backup failed."
+  echo "Error: Backup of '/opt/minecraft/$folder' failed."
   case $rsync_exit_code in
     255)
       echo "Reason: Unable to connect to $machine ($ip_address). Ensure the machine is online and accessible."
@@ -52,6 +74,23 @@ if [ $rsync_exit_code -ne 0 ]; then
   esac
   exit $rsync_exit_code
 fi
+echo "Backup of '/opt/minecraft/$folder' completed successfully!"
 
-echo "Backup of folder '$folder' completed successfully!"
+# Back up ~/minecraft/<server_name> folder
+echo "Backing up the server folder '~/minecraft/$folder' to $machine ($ip_address)..."
+rsync -av --delete "$HOME/minecraft/$folder/" joe@$ip_address:~/minecraft/$folder/ 2>/tmp/rsync_error.log
+rsync_exit_code=$?
+if [ $rsync_exit_code -ne 0 ]; then
+  echo "Error: Backup of '~/minecraft/$folder' failed."
+  case $rsync_exit_code in
+    255)
+      echo "Reason: Unable to connect to $machine ($ip_address). Ensure the machine is online and accessible."
+      ;;
+    *)
+      echo "Reason: Rsync returned error code $rsync_exit_code. Check /tmp/rsync_error.log for details."
+      ;;
+  esac
+  exit $rsync_exit_code
+fi
+echo "Backup of '~/minecraft/$folder' completed successfully!"
 
