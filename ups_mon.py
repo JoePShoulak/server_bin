@@ -26,8 +26,24 @@ def get_ups_state():
     else:
         return State.UNKNOWN
     
-def warn_minecraft():
-    subprocess.run(["sudo", "./rcon_all", f"say ${LOW_BATTERY_WARNING}"])
+def warn_minecraft(message):
+    subprocess.run(["sudo", "./rcon_all", f"say §c${message}"])
+
+def stop_all_containers():
+    try:
+        # Get the list of running container IDs
+        container_ids = subprocess.check_output(
+            ["sudo", "docker", "ps", "-q"], text=True
+        ).strip()
+
+        if container_ids:
+            # Stop all running containers
+            subprocess.run(["sudo", "docker", "stop"] + container_ids.split(), check=True)
+            print("All containers stopped successfully.")
+        else:
+            print("No running containers to stop.")
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred: {e}")
     
 def main():
     state = get_ups_state()
@@ -38,10 +54,10 @@ def main():
     match state:
         case State.BATTERY:
             # beep(1000, 5)
-            warn_minecraft()
+            warn_minecraft(LOW_BATTERY_WARNING)
         case State.CRITICAL:
             # beep(2000, 5)
-            pass
+            stop_all_containers()
         case State.ONLINE:
             pass
         case State.UNKNOWN:
