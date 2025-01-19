@@ -75,13 +75,13 @@ target_user = "joe"
 target_ip = ""
 match args.destination:
     case "hp1":
-        target_ip = "10.0.0.211"
+        target_ip = "10.0.20.11"
     case "hp2":
-        target_ip = "10.0.0.181"
+        target_ip = "10.0.20.12"
     case "hp3":
-        target_ip = "10.0.0.153"
+        target_ip = "10.0.20.13"
     case "hp4":
-        target_ip = "10.0.0.48"
+        target_ip = "10.0.20.14"
     case _:
         print(f"Invalid destination: {args.destination}")
         exit()
