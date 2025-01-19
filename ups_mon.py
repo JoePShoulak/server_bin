@@ -33,7 +33,7 @@ def main():
     match state:
         case State.BATTERY:
             beep(1000, 5)
-            subprocess("$HOME/bin/rcon_all 'say hello'")
+            subprocess("$HOME/bin/rcon_all", "say hello")
         case State.CRITICAL:
             beep(2000, 5)
         case State.ONLINE:
