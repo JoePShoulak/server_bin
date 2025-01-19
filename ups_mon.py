@@ -1,7 +1,12 @@
 import subprocess
 from beep import *
-
 from enum import Enum
+
+LOW_BATTERY_WARNING = """
+NOTE: The server computer has lost power and is running on battery.
+Your game server may shut down within 5 minutes. 
+"""
+
 class State(Enum):
     ONLINE = 2
     BATTERY = 1
@@ -24,6 +29,9 @@ def get_ups_state():
     else:
         return State.UNKNOWN
     
+def warn_minecraft():
+    subprocess.run(["sudo", "./rcon_all", LOW_BATTERY_WARNING])
+    
 def main():
     state = get_ups_state()
     print(state.name)
@@ -33,7 +41,7 @@ def main():
     match state:
         case State.BATTERY:
             # beep(1000, 5)
-            subprocess.run(["sudo", "./rcon_all", "say hello"])
+            warn_minecraft()
         case State.CRITICAL:
             # beep(2000, 5)
             pass
