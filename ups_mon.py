@@ -4,7 +4,7 @@ from enum import Enum
 from time import sleep
 
 LOW_BATTERY_WARNING = "The server computer has lost power and is running on battery. Your game server may shut down within 5 minutes."
-SHUTDOWN_WARNING = "The server The server will shut down in 10 seconds."
+SHUTDOWN_WARNING = "The server will shut down in 10 seconds."
 
 class State(Enum):
     ONLINE = 2
@@ -50,8 +50,6 @@ def stop_all_containers():
 def main():
     state = get_ups_state()
     print(state.name)
-
-    state=State.CRITICAL
 
     match state:
         case State.BATTERY:
