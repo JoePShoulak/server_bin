@@ -24,7 +24,7 @@ def get_ups_state():
     else:
         return State.UNKNOWN
 
-state = get_ups_state().name
-print(state)
+state = get_ups_state()
+print(state.name)
 if state == State.ONLINE:
     beep(1000, 5)
