@@ -48,8 +48,8 @@ def announce_minecraft(message, color="red"):
         'yellow': '§e',
     }
 
-    if colors.get('color'):
-        message = colors.get('color') + message
+    if colors.get(color):
+        message = colors.get(color) + message
 
     subprocess.run(["sudo", "./rcon_all", f"say {message}"])
 
@@ -68,6 +68,16 @@ def stop_all_containers():
             print("No running containers to stop.")
     except subprocess.CalledProcessError as e:
         print(f"An error occurred: {e}")
+
+def happy_beep():
+    beep()
+    sleep(0.1)
+    beep(2000)
+    sleep(0.1)
+    beep()
+    sleep(0.1)
+    beep(2000)
+    sleep(0.1)
 
 def main():
     old_state = State.UNKNOWN
@@ -91,14 +101,7 @@ def main():
                 sleep(10)
                 stop_all_containers()
             case State.ONLINE:
-                beep()
-                sleep(0.1)
-                beep(2000)
-                sleep(0.1)
-                beep()
-                sleep(0.1)
-                beep(2000)
-                sleep(0.1)
+                happy_beep()
                 announce_minecraft(ONLINE_MESSAGE, color="green")
             case State.UNKNOWN:
                 pass
