@@ -10,3 +10,5 @@ lines = [line for line in query_ups().stdout.splitlines() if "ups.status" in lin
 
 for line in lines:
     print(line)
+
+subprocess.run("beep", "-f", "1000", "-r", "5", "-d", "100")
