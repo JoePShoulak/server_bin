@@ -33,7 +33,7 @@ def main():
     match state:
         case State.BATTERY:
             # beep(1000, 5)
-            subprocess.run(["./rcon_all", "say hello"])
+            subprocess.run(["sudo", "./rcon_all", "say hello"])
         case State.CRITICAL:
             # beep(2000, 5)
             pass
