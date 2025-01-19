@@ -1,12 +1,14 @@
 import questionary
 
 # Prompt for input
-name = questionary.text("What is your name?").ask()
+server_name = questionary.text("Server name: ").ask()
+port = questionary.text("Port: ").ask()
+version = questionary.text("Version: ").ask()
+
 
 # Prompt for a selection
-color = questionary.select(
-    "What is your favorite color?",
-    choices=['Red', 'Blue', 'Green']
-).ask()
+# color = questionary.select(
+#     "What is your favorite color?",
+#     choices=['Red', 'Blue', 'Green']
+# ).ask()
 
-print(f"Hello {name}, your favorite color is {color}.")
