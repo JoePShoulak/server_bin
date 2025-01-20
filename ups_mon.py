@@ -70,8 +70,8 @@ def stop_all_containers():
         print(f"An error occurred: {e}", flush=True)
 
 def shutdown():
-    print('Shutting down in 10 seconds', flush=True)
-    sleep(10)
+    print('Shutting down in 3 seconds', flush=True)
+    sleep(3)
     try:
         subprocess.run(['sudo','shutdown', '-h', 'now'])
     except:
