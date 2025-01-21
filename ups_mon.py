@@ -19,9 +19,7 @@ def get_ups_state():
     status_line = [line for line in query_ups().stdout.splitlines() if "ups.status" in line][0]
     status = status_line.split(": ")[-1].split(" ")
 
-    if "LB" in status and "OB" in status: # Low Battery and On Battery
-        return State.CRITICAL
-    elif "OB" in status: # On Battery (but not critical)
+    if "OB" in status: # On Battery
         return State.BATTERY
     elif "OL" in status: # OnLine
         return State.ONLINE
@@ -95,8 +93,8 @@ def main():
 
         if state == old_state:
             if state == State.BATTERY:
-                #If we've had low battery for 2 iterations, shut down.
-                #this way, a single blip doesn't kill everything.
+                # If we've had low battery for 2 iterations, shut down.
+                # this way, a single blip doesn't kill everything.
                 stop_all_containers()
                 shutdown()
             continue
@@ -106,8 +104,6 @@ def main():
             case State.BATTERY:
                 beep(2000, 5)
                 announce_minecraft(LOW_BATTERY_MESSAGE, color="red")
-            case State.CRITICAL:
-                pass
             case State.ONLINE:
                 if old_state == State.UNKNOWN: continue
                 
