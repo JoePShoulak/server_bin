@@ -3,8 +3,7 @@ from beep import *
 from enum import Enum
 from time import sleep
 
-LOW_BATTERY_MESSAGE = "The server computer has lost power and is running on battery. Your game server may shut down within 5 minutes."
-SHUTDOWN_MESSAGE = "The server will shut down in 10 seconds."
+LOW_BATTERY_MESSAGE = "The server computer has lost power and is running on battery. Your game server may shut down within 30 seconds."
 ONLINE_MESSAGE = "Power has been restored to the server. Crisis averted! :)"
 
 class State(Enum):
@@ -91,23 +90,24 @@ def main():
     old_state = State.UNKNOWN
 
     while True:
-        sleep(1)
+        sleep(30)
         state = get_ups_state()
 
         if state == old_state:
+            if state == State.BATTERY:
+                #If we've had low battery for 2 iterations, shut down.
+                #this way, a single blip doesn't kill everything.
+                stop_all_containers()
+                shutdown()
             continue
 
         print(state.name, flush=True)
         match state:
             case State.BATTERY:
-                beep(1000, 5)
+                beep(2000, 5)
                 announce_minecraft(LOW_BATTERY_MESSAGE, color="red")
             case State.CRITICAL:
-                beep(2000, 5)
-                announce_minecraft(SHUTDOWN_MESSAGE, color="red")
-                sleep(10)
-                stop_all_containers()
-                shutdown()
+                pass
             case State.ONLINE:
                 if old_state == State.UNKNOWN: continue
                 
