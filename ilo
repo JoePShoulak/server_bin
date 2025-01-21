@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Check if at least two arguments are provided
+if [ "$#" -lt 2 ]; then
+  echo "Usage: $0 <destination> <command> [arguments...]"
+  exit 1
+fi
+
+# Extract the destination (first argument)
+DESTINATION="$1"
+shift # Remove the first argument, so $@ now contains the rest
+
+# Build and execute the sshpass command
+sshpass -f ilo_auth.txt ssh "$DESTINATION.ilo" "$@"
