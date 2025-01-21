@@ -3,8 +3,8 @@
 LAST=''
 while true
 do
-    read -r UID </opt/uid/uid
-    UID="${UID^^}"
+    read -r _UID </opt/uid/uid
+    UID="${_UID^^}"
 
     if [ "$UID" == IDLE ]
     then
@@ -20,6 +20,8 @@ do
       sleep 5
       ilo hp2 UID ON
     fi
+
+    LAST="$UID"
 
     sleep 5
 done
